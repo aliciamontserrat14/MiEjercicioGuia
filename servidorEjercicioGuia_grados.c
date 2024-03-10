@@ -5,7 +5,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdio.h>
-#include <ctype.h> // for toupper function
 
 int main(int argc, char* argv[])
 {
@@ -52,45 +51,14 @@ int main(int argc, char* argv[])
         char* p = strtok(peticion, "/");
         int codigo = atoi(p);
         p = strtok(NULL, "/");
-        char nombre[20];
-        strcpy(nombre, p);
-        printf("Code: %d, Name: %s\n", codigo, nombre);
+        double celsius = atof(p);
+        printf("Code: %d, Celsius: %lf\n", codigo, celsius);
 
         // Perform actions based on the request code
-        if (codigo == 1) // Request for the length of the name
-            sprintf(respuesta, "%d", strlen(nombre));
-        else if (codigo == 2) // Check if the name is beautiful
+        if (codigo == 1) // Convert Celsius to Fahrenheit
         {
-            if ((nombre[0] == 'M') || (nombre[0] == 'S'))
-                strcpy(respuesta, "YES");
-            else
-                strcpy(respuesta, "NO");
-        }
-        else if (codigo == 3) // Check if the name is a palindrome
-        {
-            int len = strlen(nombre);
-            int isPalindrome = 1; // Assume it's a palindrome initially
-
-            // Compare characters from start and end
-            for (int j = 0; j < len / 2; j++)
-            {
-                if (tolower(nombre[j]) != tolower(nombre[len - j - 1])) // Compare ignoring case
-                {
-                    isPalindrome = 0; // Not a palindrome
-                    break;
-                }
-            }
-
-            if (isPalindrome)
-                strcpy(respuesta, "YES");
-            else
-                strcpy(respuesta, "NO");
-        }
-        else if (codigo == 4) // Return the name in uppercase
-        {
-            for (int j = 0; nombre[j] != '\0'; j++)
-                nombre[j] = toupper(nombre[j]);
-            strcpy(respuesta, nombre);
+            double fahrenheit = (celsius * 9 / 5) + 32;
+            sprintf(respuesta, "%.2lf", fahrenheit); // Limit to 2 decimal places
         }
         else
         {
@@ -105,4 +73,3 @@ int main(int argc, char* argv[])
     }
 }
 
-}
